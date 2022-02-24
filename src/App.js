@@ -1,8 +1,44 @@
 import './App.css';
 import BarChart from './components/charts/BarChart';
+import ChartWrapper from './components/ChartWrapper';
+import Header from './components/Header';
+import styled from 'styled-components';
+
+const TwoCharts = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 10vh 1fr 10vh;
+    grid-template-areas: 
+    ". ."
+    "barchart barchart2"
+    ". .";
+
+    @media (max-width: 800px){
+      grid-template-columns: 1fr;
+      grid-template-rows: 5vh 1fr 5vh 1fr 5vh;
+      grid-template-areas: 
+      "."
+      "barchart"
+      "."
+      "barchart2"
+      ".";
+    }
+  `;
+
+const Bar = styled.div`
+    grid-area:barchart;
+    border: 4px solid purple;
+  `;
+
+const Bar2 = styled.div`
+    grid-area: barchart2;
+    border: 4px solid orange;
+  `;
+
 
 function App() {
 
+  // Example Data For BarChart
   const data = [
     {year: 1980, efficiency: 24.3, sales: 8949000},
     {year: 1985, efficiency: 27.6, sales: 10979000},
@@ -36,10 +72,27 @@ function App() {
     {year: 2017, efficiency: 39.4, sales: 6081000},
   ]
 
+  const dimensions = {
+    height: 400,
+    width: 600,
+    margin: {top: 20, right: 30, bottom: 30, left: 40}
+  }
 
   return (
     <div className="App">
-      <BarChart data={data} />
+      <Header />
+      <TwoCharts>
+        <Bar>
+          <ChartWrapper chartName="Bar Chart">
+            <BarChart data={data} dimensions={dimensions} />
+          </ChartWrapper>
+        </Bar>
+        <Bar2>
+          <ChartWrapper chartName="Bar Chart Two">
+            <BarChart data={data} dimensions={dimensions} />
+          </ChartWrapper>
+        </Bar2>
+      </TwoCharts>
     </div>
   );
 }

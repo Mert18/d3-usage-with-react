@@ -2,13 +2,13 @@ import React, {useState, useEffect} from "react";
 import * as d3 from "d3";
 import {useD3} from "../../hooks/useD3";
 
-const BarChart = ({data}) => {
+const BarChart = ({data, dimensions}) => {
 
   const ref = useD3(
     (svg) => {
-      const height = 300;
-      const width = 800;
-      const margin = {top: 20, right: 30, bottom: 30, left: 40};
+      const height = dimensions.height;
+      const width = dimensions.width;
+      const margin = dimensions.margin;
 
       const x = d3
         .scaleBand()
@@ -36,7 +36,7 @@ const BarChart = ({data}) => {
       const y1Axis = (g) =>
         g
           .attr("transform", `translate(${margin.left},0)`)
-          .style("color", "steelblue")
+          .style("color", "purple")
           .call(d3.axisLeft(y1).ticks(null, "s"))
           .call((g) => g.select(".domain").remove())
           .call((g) =>
@@ -54,7 +54,7 @@ const BarChart = ({data}) => {
 
       svg
         .select(".plot-area")
-        .attr("fill", "steelblue")
+        .attr("fill", "purple")
         .selectAll(".bar")
         .data(data)
         .join("rect")
@@ -69,8 +69,10 @@ const BarChart = ({data}) => {
   return (
     <svg
       ref={ref}
+      viewBox="0 0 700 400"
+      preserveAspectRatio="xMidYMid meet"
       style={{
-        height: 500,
+        height: dimensions.height,
         width: "100%",
         marginRight: "0px",
         marginLeft: "0px",
